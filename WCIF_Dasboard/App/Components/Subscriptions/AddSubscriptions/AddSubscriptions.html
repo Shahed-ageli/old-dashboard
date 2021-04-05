@@ -1,0 +1,214 @@
+﻿<div class="content" dir="rtl">
+
+
+
+    <div class="row">
+
+        <div class="col-md-12">
+
+            <div class="card ">
+
+                <div class="card-header">
+
+                    <h4 class="card-title"><i class="nc-icon nc-bank" style="color:#ef8157 ;margin-left: 5px;"></i> الإشتراك في باقة جديدة </h4>
+
+                </div>
+
+                <br /><br />
+                <div class="card-body ">
+                    <el-form :model="SubscriptionsInfo" ref="SubscriptionsInfo">
+
+                        <div class="row">
+
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+
+                                    <label>الشريك</label>
+                                    <el-select style="width: 100%;" filterable placeholder="الشريك" v-model="PartnersId" @change="GetPartnerService()">
+
+                                        <el-option v-for="item in PartnersPhones"
+                                                   :key="item.id"
+                                                   :label="item.companyName"
+                                                   :value="item.id">
+                                        </el-option>
+
+                                    </el-select>
+                                </div>
+
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>الخدمة</label>
+                                    <el-select style="width: 100%;" filterable placeholder="الخدمة" v-model="SubscriptionsInfo.ServicesId">
+
+                                        <el-option v-for="item in PartnerServices"
+                                                   :key="item.id"
+                                                   :label="item.shortCode"
+                                                   :value="item.id">
+                                            <span style="float: right">{{ item.shortCode }}</span>
+                                            <span style="float: left; color: #8492a6; font-size: 13px">{{ item.shortName }}</span>
+                                        </el-option>
+
+                                    </el-select>
+                                </div>
+                            </div>
+
+
+                        </div>
+                        <br />
+                        <div class="row">
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>نوع الباقة</label>
+                                    <el-select style="width: 100%;" filterable placeholder="نوع الباقة" v-model="TypeSelected" @change="GetAllPackeges()">
+
+                                        <el-option v-for="item in PackegesType"
+                                                   :key="item.id"
+                                                   :label="item.name"
+                                                   :value="item.id">
+                                        </el-option>
+
+                                    </el-select>
+                                </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>الباقة</label>
+                                        <el-select style="width: 100%;" filterable placeholder="الباقة" v-model="SubscriptionsInfo.PackageId">
+
+                                            <el-option v-for="item in Packeges"
+                                                       :key="item.id"
+                                                       :label="item.name"
+                                                       :value="item.id">
+                                                <span style="float: right">{{ item.name }}</span>
+                                                <span style="float: left; color: #8492a6; font-size: 13px">{{ item.smscount }}</span>
+                                            </el-option>
+
+                                        </el-select>
+                                    </div>
+                                </div>
+
+                            </div>
+                        <br />
+                        <div class="row">
+
+                            <div class="col-md-4 ">
+                                <div class="form-group">
+                                    <label>المدفوع</label>
+                                    <div class="form-group">
+                                        <el-form-item prop="Cash"
+                                                      label-width="0px"
+                                                      :rules="[{required: true, message: 'الرجاء إدخال القيمة المدفوعة'},
+                                                                   { required: true, pattern: /^[0-9]*$/, message: 'الرجاء إدخال ارقام فقط', trigger: 'blur' }]">
+                                            <el-input type="phone"
+                                                      placeholder="المدفوع"
+                                                      v-model="SubscriptionsInfo.Cash" />
+                                            <!--autocomplete="off"-->
+                                        </el-form-item>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>تاريخ صلايحة الباقة </label>
+
+                                    <el-date-picker style="width:100%"
+                                                    v-model="SubscriptionsInfo.From"
+                                                    type="date"
+                                                    placeholder="من">
+                                    </el-date-picker>
+
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>إلــي  </label>
+
+                                    <el-date-picker style="width:100%"
+                                                    v-model="SubscriptionsInfo.To"
+                                                    type="date"
+                                                    placeholder="إلي">
+                                    </el-date-picker>
+
+
+                                </div>
+                            </div>
+
+                        </div>
+                        <br />
+                        <div class="row">
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>عدد الرسائل المستخدمة إن وجدت</label>
+                                    <div class="form-group">
+                                        <el-form-item prop="UsedSMS"
+                                                      label-width="0px"
+                                                      :rules="[{required: true, message: 'الرجاء إدخال عدد الرسائل'}
+                                                                  ,{ required: true, pattern: /^[0-9]*$/, message: 'الرجاء إدخال ارقام فقط', trigger: 'blur' }]">
+                                            <el-input type="countMassage"
+                                                      placeholder="عدد الرسائل"
+                                                      v-model.number="SubscriptionsInfo.UsedSMS" />
+                                        </el-form-item>
+
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>الحد الأقصي للإستهلاك بالنسبة المئوية %</label>
+                                    <div class="form-group">
+                                        <el-form-item prop="MaximumRatio"
+                                                      label-width="0px"
+                                                      :rules="[{required: true, message: 'الرجاء إدخال القيمة'}
+                                                                  , { required: true, pattern: /^[0-9]*$/, message: 'الرجاء إدخال ارقام فقط', trigger: 'blur' }]">
+                                            <el-input type="amount"
+                                                      placeholder="القيمة"
+                                                      v-model.number="SubscriptionsInfo.MaximumRatio" />
+                                        </el-form-item>
+
+                                    </div>
+                                </div>
+
+                            </div>
+
+
+
+                        </div>
+
+
+
+                        <div class="row">
+
+                            <div class="col-md-12">
+
+                                <div class="disabled-sorting text-right">
+
+                                    <el-button class="btn btn-primary" type="primary" @click="submitForm('SubscriptionsInfo')">إشتراك </el-button>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </el-form>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+</div>
+

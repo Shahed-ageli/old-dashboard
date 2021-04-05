@@ -1,0 +1,182 @@
+﻿<div class="content">
+    <el-form :model="customersInfo" ref="customersInfo">
+        <div class="row" style="direction: rtl;">
+
+            <div class="col-md-12">
+                <div class="card ">
+                    <div class="card-header">
+                        <h4 class="card-title"><i class="nc-icon nc-bank" style="color:#ef8157 ;margin-left: 5px;"></i> إضافة المنتج إلي عميل</h4>
+                    </div>
+
+                    <br />
+                    <div class="card-body ">
+                        <form class="form-horizontal">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <label>إسم العميل</label>
+                                            <div class="form-group">
+
+                                                <el-form-item prop="custmorId"
+                                                              label-width="0px"
+                                                              :rules="[{required: true, message: 'الرجاء إختيار العميل'} ]">
+                                                    <el-select style="width: 100%;" filterable placeholder="إسم العميل" v-model="customersInfo.custmorId">
+
+                                                        <el-option v-for="item in custmors"
+                                                                   :key="item.customerId"
+                                                                   :label="item.fullName"
+                                                                   :value="item.customerId">
+                                                        </el-option>
+
+                                                    </el-select>
+                                                </el-form-item>
+
+
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label>إسم الخدمة</label>
+                                            <div class="form-group">
+                                                <el-form-item prop="serviceName"
+                                                              label-width="0px"
+                                                              :rules="[{required: true, message: 'الرجاء إدخال إسم الخدمة'} ]">
+                                                    <el-input type="serviceName"
+                                                              placeholder="إسم الخدمة"
+                                                              v-model="customersInfo.serviceName"
+                                                              autocomplete="off" />
+                                                </el-form-item>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label>رقم الخدمة</label>
+                                            <div class="form-group">
+                                                <el-form-item prop="code"
+                                                              label-width="0px"
+                                                              :rules="[{required: true, message: 'الرجاء إدخال رقم الخدمة'}]">
+                                                    <el-input type="code"
+                                                              placeholder="رقم الخدمة"
+                                                              v-model.number="customersInfo.code"
+                                                              autocomplete="off" />
+                                                </el-form-item>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="row">
+
+                                        <div class="col-md-6">
+                                            <label>القيمة</label>
+                                            <div class="form-group">
+                                                <el-form-item prop="amount"
+                                                              label-width="0px"
+                                                              :rules="[{required: true, message: 'الرجاء إدخال القيمة'}
+                                                                  ,{ type: 'number', message: 'يجب أن يكون الحقل أرقام فقط'}]">
+                                                    <el-input type="amount"
+                                                              placeholder="القيمة"
+                                                              v-model.number="customersInfo.amount"
+                                                              autocomplete="off" />
+                                                </el-form-item>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label>عدد الرسائل</label>
+                                            <div class="form-group">
+                                                <el-form-item prop="countMassage"
+                                                              
+                                                              label-width="0px"
+                                                              :rules="[{required: true, message: 'الرجاء إدخال عدد الرسائل'}
+                                                                  ,{ type: 'number', message: 'يجب أن يكون الحقل أرقام فقط'}]">
+                                                    <el-input type="countMassage"
+                                                              placeholder="عدد الرسائل"
+                                                              v-model.number="customersInfo.countMassage"
+                                                              autocomplete="off" />
+                                                </el-form-item>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <label>عدد الرسائل المستخدمة</label>
+                                            <div class="form-group">
+                                                <el-form-item prop="countUseMassage"
+                                                              label-width="0px"
+                                                              :rules="[{required: true, message: 'الرجاء إدخال عدد الرسائل المستخدمة'}
+                                                                  ,{ type: 'number', message: 'يجب أن يكون الحقل أرقام فقط'}]">
+                                                    <el-input type="countUseMassage"
+                                                              placeholder="عدد الرسائل المستخدمة"
+                                                              v-model.number="customersInfo.countUseMassage"
+                                                              autocomplete="off" />
+                                                </el-form-item>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label>تاريخ صلايحة الباقة </label>
+
+                                            <el-form-item prop="from"
+                                                          label-width="0px"
+                                                          :rules="[{ required: true, message: 'الرجاء إدخال تاريخ  '} ]">
+
+                                                <el-date-picker style="width:100%"
+                                                                v-model="customersInfo.from"
+                                                                type="date"
+                                                                placeholder="من">
+                                                </el-date-picker>
+
+                                            </el-form-item>
+
+                                        </div>
+
+                                        <div class="col-md-4">
+                                            <label>إلــي  </label>
+
+                                            <el-form-item prop="to"
+                                                          label-width="0px"
+                                                          :rules="[{ required: true, message: 'الرجاء إدخال تاريخ  '} ]">
+
+                                                <el-date-picker style="width:100%"
+                                                                v-model="customersInfo.to"
+                                                                type="date"
+                                                                placeholder="إلي">
+                                                </el-date-picker>
+
+                                            </el-form-item>
+
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <div class="disabled-sorting text-right" style="margin-top:16px">
+
+                                                    <el-button class="btn btn-primary" type="primary" @click="submitForm('customersInfo')">إضافة بيانات فالمنتج</el-button>
+
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </el-form>
+</div>
+       

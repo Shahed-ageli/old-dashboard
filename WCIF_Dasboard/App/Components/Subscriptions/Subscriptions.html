@@ -1,0 +1,337 @@
+﻿<div class="content" style="direction:rtl">
+    
+    <div class="row" v-if="state==0">
+        
+        <div class="col-md-12">
+            
+            <div class="card">
+                
+                <div class="card-header">
+                    
+                    <h4 class="card-title"><i class="nc-icon nc-bank" style="color:#ef8157 ;margin-left: 5px;" ></i> إدارة الإشتراكات</h4>
+                
+                </div>
+                
+                <div class="card-body">
+
+                    <div class="row" >
+                        <div class="col-md-3">
+
+                            <el-select style="width: 100%;" filterable placeholder="البحت" v-model="SearchTypeSelected" @change="GetSubscriptions()">
+
+                                <el-option v-for="item in SearchType"
+                                           :key="item.id"
+                                           :label="item.name"
+                                           :value="item.id">
+                                </el-option>
+
+                            </el-select>
+                        </div>
+
+                        <div class="col-md-3" v-if="SearchTypeSelected==1">
+
+                            <el-select style="width: 100%;" filterable placeholder="إسم الشركة" v-model="SearchId" @change="GetSubscriptions();">
+
+                                <el-option v-for="item in PartnersPhones"
+                                           :key="item.id"
+                                           :label="item.companyName"
+                                           :value="item.id">
+                                </el-option>
+
+                            </el-select>
+                        </div>
+
+                        <div class="col-md-3" v-if="SearchTypeSelected==2">
+
+                            <el-select style="width: 100%;" filterable placeholder="رقم الهاتف" v-model="SearchId" @change="GetSubscriptions()">
+
+                                <el-option v-for="item in PartnersPhones"
+                                           :key="item.id"
+                                           :label="item.phone"
+                                           :value="item.id">
+                                </el-option>
+
+                            </el-select>
+                        </div>
+
+                    </div>
+
+
+                    <!--SMS Service Info-->
+                    <el-dialog :visible.sync="SMSServiceInfoDialog" :modalAppendToBody="false">
+
+                        <div>
+
+                            <div class="modal-header">
+
+                                <h5 class="modal-title"> البيانات الخاصة بي الإشتراك </h5>
+
+                            </div>
+
+                            <div class="modal-body">
+
+                                <div class="card-header " style="margin-right:5%">
+
+                                    <h5 class="card-title">
+                                        {{selectedPackege.companyName}}
+                                    </h5>
+
+                                    <p class="card-category">{{selectedPackege.code}}</p>
+
+                                    <hr />
+
+                                </div>
+
+                                <div class="card-body ">
+
+                                    <div class="row">
+
+                                        <div class="col-md-4">
+
+                                            <el-progress type="circle" :percentage="selectedPackege.usagePercentage"></el-progress>
+
+                                        </div>
+
+                                        <div class="col-md-8">
+
+                                            <div class="row" style="color:lightslategrey">
+
+                                                <div class="col-md-7">
+
+                                                    <h6>
+                                                        قيمة الإشتراك
+                                                    </h6>
+                                                    <h6 style="margin-top:15px">
+                                                        القيمة المدفوعة
+                                                    </h6>
+                                                    <h6 style="margin-top:15px">
+                                                        إجمـــالــي عــدد الرســائــل
+                                                    </h6>
+                                                    <h6 style="margin-top:15px">
+                                                        الرسائل المستخدمة
+                                                    </h6>
+
+
+                                                </div>
+
+                                                <div class="col-md-4">
+
+                                                    <h6>
+                                                        {{selectedPackege.price}} دينار
+                                                    </h6>
+                                                    <h6 style="margin-top:15px">
+                                                        {{selectedPackege.cash}} دينار
+                                                    </h6>
+                                                    <h6 style="margin-top:15px">
+                                                        {{selectedPackege.smsCount}} رسالــة
+                                                    </h6>
+                                                    <h6 style="margin-top:15px">
+                                                        {{selectedPackege.usedSMS}} رسالــة
+                                                    </h6>
+
+
+                                                </div>
+
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                                <div class="card-footer ">
+
+                                    <div class="legend" v-if="selectedPackege.status==1">
+
+                                        <i class="fa fa-circle text-info"></i> نشطة
+
+                                    </div>
+
+                                    <div class="legend" v-if="selectedPackege.status==2">
+
+                                        <i class="fa fa-circle text-info"></i> غير نشطة
+
+                                    </div>
+
+                                    <div class="legend" v-if="selectedPackege.status==3">
+
+                                        <i class="fa fa-circle text-info"></i> غير نشطة
+
+                                    </div>
+
+                                    <div class="legend" v-if="selectedPackege.status==4">
+
+                                        <i class="fa fa-circle text-info"></i> تخطت الحد الاقصي
+
+                                    </div>
+
+                                    <hr>
+
+                                    <div class="row" style="padding-right:20px">
+
+                                        <div class="stats">
+                                            تاريخ الإشتراك
+                                            <br />
+                                            <i class="fa fa-calendar"></i> {{selectedPackege.from | moment}}
+                                            <br />
+                                        </div>
+
+                                        <div class="stats" style="/* FONT-WEIGHT: 500; */float: left;display: block;left: 20px;position: absolute;">
+                                            صلاحية الباقة
+                                            <br> <i class="fa fa-calendar"></i> {{selectedPackege.to | moment}}
+                                            <br>
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </el-dialog>
+
+
+
+                    <br /><br />
+
+                    <div v-if="Subscriptions==0">
+                        <br />
+                        <br />
+                        <el-alert type="info" style="font-size: 20px;margin-right: 14px;line-height: 18px;" title="">
+                            عفــوا! لاتوجد بيانات للباقات
+                        </el-alert>
+                    </div>
+
+
+                    <table id="datatable" class="table table-striped table-bordered" cellspacing="0" width="100%" v-if="Subscriptions!=0">
+
+                        <thead>
+
+                            <tr class="text-primary">
+                                <th>#</th>
+                                <th>إسم الشريك</th>
+                                <th>إسم الخدمة</th>
+                                <th>رقم الخدمة </th>
+                                <th> الخدمة </th>
+                                <th> عدد الرسائل </th>
+                                <th> الرسائل المستخدمة </th>
+                                <th>السعر  </th>
+                                <th>المدفوع </th>
+                                <th>تاريخ الصلاحية</th>
+                                <th>اقصي نسبة للإستهلاك</th>
+                                <th> الحالة</th>
+                                <th class="disabled-sorting text-right">الإعدادات</th>
+                            </tr>
+
+                        </thead>
+
+                        <tbody style="text-align:right">
+
+                            <tr v-for="packege,index in Subscriptions" style="font-size:11.3pt;">
+                                <td>{{index+1 }} </td>
+                                <td>{{packege.companyName }} </td>
+                                <td>{{packege.name}}</td>
+                                <td>{{packege.code}}</td>
+                                <td>{{packege.shortName}}</td>
+                                <td>{{packege.smsCount}}</td>
+                                <td>{{packege.usedSMS}}</td>
+                                <td>{{packege.price}}</td>
+                                <td>{{packege.cash}}</td>
+                                <td>{{packege.to | moment}}</td>
+                                <td>{{packege.maximumRatio}}</td>
+                                <td v-if="packege.status==1"> <span class="badge badge-pill badge-success" style="border-radius: 3px;">نشطة</span></td>
+                                <td v-if="packege.status==2"> <span class=" badge badge-pill badge-danger " style="border-radius: 3px;">غير نشطة</span></td>
+                                <td v-if="packege.status==3"> <span class=" badge badge-pill badge-danger " style="background-color:#dd4b39;border-radius: 3px;">موقوفة</span></td>
+                                <td v-if="packege.status==4"> <span class=" badge badge-pill badge-danger " style="background-color:#dd4b39;border-radius: 3px;">تخطت الحد الاقصي</span></td>
+
+                                <td class="text-right">
+                                    
+
+
+
+
+
+                                    <a class="btn btn-info btn-link btn-icon btn-sm like"
+                                       @click.prevent="showSmsInfo(packege)"
+                                       title="متابعة الباقة"
+                                       href="#">
+
+                                        <i class="fa fa-line-chart" style="font-size:13px"></i>
+                                    </a>
+
+                                    <a class="btn btn-danger btn-link btn-icon btn-sm remove"
+                                       @click.prevent="stopServeice(packege.id)"
+                                       title="إيقاف الخدمة"
+                                       v-if="packege.status!=3"
+                                       href="#">
+
+                                        <i class="fa fa-pause" style="font-size:13px"></i>
+                                    </a>
+
+                                    <a class="btn btn-success btn-link btn-icon btn-sm like"
+                                       @click.prevent="backService(packege.id)"
+                                       title="إلغاء الإيقاف"
+                                       v-if="packege.status==3"
+                                       href="#">
+
+                                        <i class="fa fa-play" style="font-size:13px"></i>
+                                    </a>
+
+                                </td>
+
+                            </tr>
+
+                        </tbody>
+
+                    </table>
+                    <div class="row" dir="ltr" v-if="Subscriptions!=0">
+
+                        <div class="col-sm-12 col-md-6">
+
+                            <div class="disabled-sorting text-right"
+                                 id="datatable_info"
+                                 aria-live="polite"
+                                 role="status">
+
+                                Showing {{pageNo}} to {{pageSize}} of {{pages}} entries
+
+                            </div>
+
+                        </div>
+                        <div class="col-sm-12 col-md-6">
+
+                            <div class="disabled-sorting text-left"
+                                 id="datatable_info"
+                                 aria-live="polite"
+                                 role="status">
+
+                                <el-pagination background
+                                               layout="prev, pager, next"
+                                               :current-page="pageNo"
+                                               :page-size="pageSize"
+                                               :total="pages"
+                                               @current-change="getPackeges($event)">
+                                </el-pagination>
+
+                            </div>
+
+                        </div>
+
+
+
+                    </div>
+
+                </div>
+            
+            </div>
+            
+        </div>
+    
+    </div>
+
+</div>
+
+       

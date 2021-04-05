@@ -1,0 +1,172 @@
+﻿
+<div class="content" style="direction:rtl">
+    <add-coustomers v-if="state==1"></add-coustomers>
+    <customersSteps v-if="state==2"></customersSteps>
+    <div class="row" v-if="state==0" >
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="card-title"><i class="nc-icon nc-single-02" style="color:#ef8157;margin-left: 10px;"></i>إدارة الشركاء </h4>
+                </div>
+                <div class="card-body">
+                    <div class="toolbar">
+
+                        <div class="row" v-if="Partners==0">
+
+                            <div class="col-md-10">
+                                <div class="form-group">
+                                    <br /><br />
+                                    <el-alert style="font-size: 35px;" title="عفــوا! لاتوجد بيانات للشركاء"
+                                              type="info">
+                                    </el-alert>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row" v-if="Partners!=0">
+                            <div class="col-md-3">
+
+                                <el-select style="width: 100%;" filterable placeholder="البحت" v-model="SearchTypeSelected" @change="GetPartners()">
+
+                                    <el-option v-for="item in SearchType"
+                                               :key="item.id"
+                                               :label="item.name"
+                                               :value="item.id">
+                                    </el-option>
+
+                                </el-select>
+                            </div>
+
+                            <div class="col-md-3" v-if="SearchTypeSelected==1">
+
+                                <el-select style="width: 100%;" filterable placeholder="إسم الشركة" v-model="SearchId" @change="GetPartners();">
+
+                                    <el-option v-for="item in PartnersPhones"
+                                               :key="item.id"
+                                               :label="item.companyName"
+                                               :value="item.id">
+                                    </el-option>
+
+                                </el-select>
+                            </div>
+
+                            <div class="col-md-3" v-if="SearchTypeSelected==2">
+
+                                <el-select style="width: 100%;" filterable placeholder="رقم الهاتف" v-model="SearchId" @change="GetPartners()">
+
+                                    <el-option v-for="item in PartnersPhones"
+                                               :key="item.id"
+                                               :label="item.phone"
+                                               :value="item.id">
+                                    </el-option>
+
+                                </el-select>
+                            </div>
+
+                        </div>
+
+
+
+                    </div>
+                    <br />
+                    <!--{{Partners}}-->
+                    <br />
+                    <table id="datatable" class="table table-striped table-bordered" cellspacing="0" width="100%" v-if="Partners!=0">
+                        <thead>
+                            <tr class="text-primary">
+                                <th>#</th>
+                                <th>إسم الشركة</th>
+                                <th>رقم الهاتف </th>
+                                <th>رقم الهاتف الاحتياطي</th>
+                                <th>البريد الإلكتروني</th>
+                                <th>فاكس</th>
+                                <th>رقم الترخيص</th>
+                                <th>عدد الباقات </th>
+                                <th>تاريخ الإضافة </th>
+                                <th>المستخدم </th>
+                                <!--<th>عدد الباقات النشطة </th>-->
+                                <!--<th>الحالة</th>-->
+                                <th class="disabled-sorting text-right">الإعدادات</th>
+                            </tr>
+                        </thead>
+                        <tbody style="text-align:right">
+                            <tr v-for="item,index in Partners" style="font-size:11.3pt;">
+                                <td>{{index+1 }} </td>
+                                <td>{{item.companyName }} </td>
+                                <td>{{item.phone}}</td>
+                                <td>{{item.externalPhone}}</td>
+                                <td>{{item.email}}</td>
+                                <td>{{item.fax}}</td>
+                                <td>{{item.licenseNumber}}</td>
+                                <td>{{item.packegeCount}}</td>
+                                <td>{{item.createdOn | moment}}</td>
+                                <td>{{item.createdBy}}</td>
+                                <!--<td>{{item.activePackegeCount}}</td>-->
+                                <!--<td v-if="item.status==1"> <span class="badge badge-pill badge-success" style="border-radius: 3px;">نشط</span></td>-->
+                                <!--<td v-if="item.status==2"> <span class=" badge badge-pill badge-danger " style="border-radius: 3px;">موقوف</span></td>-->
+
+                                <td class="text-right">
+
+                                    <a title="تعديل البيانات" href="#" class="btn btn-warning btn-link btn-icon btn-sm like" @click.prevent="ViewPartner(item)">
+                                        <i class="fa fa-edit" style="font-size:13px"></i>
+                                    </a>
+
+                                    <!--<a title="إيقاف العميل" href="#" class="btn btn-default btn-link btn-icon btn-sm like" @click.prevent="StopPartner(item.id)">
+                                        <i class="fa fa-ban" style="font-size:13px"></i>
+                                    </a>-->
+
+                                    <a title="حدف العميل" href="#" class="btn btn-danger btn-link btn-icon btn-sm remove" @click.prevent="DeletePartner(item.id)">
+                                        <i class="fa fa-times" style="font-size:13px"></i>
+                                    </a>
+                                </td>
+
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="row" dir="ltr" v-if="Partners!=0">
+
+                        <div class="col-sm-12 col-md-6">
+
+                            <div class="disabled-sorting text-right"
+                                 id="datatable_info"
+                                 aria-live="polite"
+                                 role="status">
+
+                                Showing {{pageNo}} to {{pageSize}} of {{pages}} entries
+
+                            </div>
+
+                        </div>
+                        <div class="col-sm-12 col-md-6">
+
+                            <div class="disabled-sorting text-left"
+                                 id="datatable_info"
+                                 aria-live="polite"
+                                 role="status">
+
+                                <el-pagination background
+                                               layout="prev, pager, next"
+                                               :current-page="pageNo"
+                                               :page-size="pageSize"
+                                               :total="pages"
+                                               @current-change="GetPartners($event)">
+                                </el-pagination>
+
+                            </div>
+
+                        </div>
+
+
+
+                    </div>
+                </div>
+                <!-- end content-->
+            </div>
+            <!--  end card  -->
+        </div>
+        <!-- end col-md-12 -->
+    </div>
+    <!-- end row -->
+</div>
+
+       

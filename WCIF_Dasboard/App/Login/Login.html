@@ -1,0 +1,116 @@
+﻿
+
+
+
+
+
+
+<div>
+
+    <nav class="navbar navbar-expand-lg navbar-absolute fixed-top navbar-transparent" style="
+    border: transparent;
+    margin-top: 25px;
+">
+        <div class="container">
+            <div class="navbar-wrapper" style="
+">
+                <div class="navbar-toggle"><button type="button" class="navbar-toggler"><span class="navbar-toggler-bar bar1"></span> <span class="navbar-toggler-bar bar2"></span> <span class="navbar-toggler-bar bar3"></span></button></div> <a href="#pablo" class="navbar-brand" style="
+    color: white;
+">WCIF System</a>
+            </div> <button type="button" data-toggle="collapse" data-target="#navigation" aria-controls="navigation-index" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler"><span class="navbar-toggler-bar navbar-kebab"></span> <span class="navbar-toggler-bar navbar-kebab"></span> <span class="navbar-toggler-bar navbar-kebab"></span></button>
+        </div>
+    </nav>
+
+
+
+
+    <div class="wrapper wrapper-full-page ">
+        <div class="full-page register-page section-image" filter-color="black" data-image="../../assets/img/bg/binary.jpg">
+            <div class="content">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-5 col-md-5 ml-auto">
+                            <div class="info-area info-horizontal mt-5">
+                                <div class="icon icon-primary">
+                                    <i class="nc-icon nc-tv-2"></i>
+                                </div>
+                                <div class="description">
+                                    <h5 class="info-title">لوحة التحكم   </h5>
+                                    <p class="description">
+                                        WCIF لوحة ألتحكم هذه مخصصة لمسؤول نظام
+                                    </p>
+                                </div>
+                            </div>
+                     
+                          
+                        </div>
+                        <div class="col-lg-4 col-md-6 mr-auto">
+                            <div class="card card-signup text-center">
+                                <div class="card-header ">
+
+                                    <div class="social">
+                                        <div class="photo">
+                                            <img src="/assets/img/bg/login.png" style="
+    margin-top: -15px;
+    height: 150px;
+    display: block;
+    margin-left: 40px;
+">
+                                        </div>
+                                        <div style="height:30px"></div>
+                                    </div>
+                                </div>
+                                <div class="card-body ">
+                                    <form class="form" v-if="!ForgetPassword" v-on:submit.prevent="Save()">
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text" style="padding: 10px 10px 10px 10px;">
+                                                    <i class="nc-icon nc-single-02"></i>
+                                                </span>
+                                            </div>
+                                            <input type="email" v-model="form.Email" placeholder="you@example.com" class="form-control" v-on:keyup.enter="Save()">
+                                        </div>
+                                        <div class="input-group">
+
+                                        </div>
+                                        <div class="input-group">
+
+                                        </div>
+                                        <div class="input-group">
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text" style="padding: 10px 10px 10px 10px;">
+                                                        <i class="nc-icon nc-key-25"></i>
+                                                    </span>
+                                                </div>
+                                                <input type="password" auto-complete="off" v-model="form.Password" placeholder="*************" class="form-control" v-on:keyup.enter="Save()" /><!--v-on:keyup="Save()"-->
+                                            </div>
+                                        </div>
+
+                                    </form>
+                                </div>
+                                <div class="card-footer " style="margin-top:0px">
+                                    <el-button class="btn btn " style="        width: 50%; background-color: #2e97a9;" @click.prevent="Save()">Login</el-button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <footer class="footer footer-black  footer-white ">
+                <div class="container-fluid">
+                    <div class="row" style="margin-left:10px">
+                        <div class="pull-left">
+                            <span class="copyright">
+                                ©
+                                Created By <i class="nc-icon nc-planet heart" style="color:aliceblue"></i>
+                                WCIF Team
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </footer>
+            <div class="full-page-background" style="background-image: url(../../assets/img/bg/binary.jpg) "></div>
+        </div>
+    </div>
+</div>
